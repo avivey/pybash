@@ -1,0 +1,5 @@
+#! /usr/bin/env sh
+# prints a line of text and extra newlines.
+echo
+echo hello
+echo

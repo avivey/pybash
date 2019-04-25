@@ -80,10 +80,11 @@ PendingCommand class:
   Otherwise, the arguments are assumed to be the inputs for `cmd`, and the two
   commands are piped together.
 
-  .and(), .or():
+  .and_(), .or_():
     These methods take either a PendingCommand instance or the arguments for
   `cmd`. The resulting command is chained to self as if by `&&` or `||` operator
-  in Bash. Non-0 exit status on the command on the left will not raise.
+  in Bash.
+    (The funny names are because `and` and `or` are reserved words).
 
 CommandResult class:
   Instances of this class are immutable, and they keep the entire outputs from
