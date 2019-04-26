@@ -35,42 +35,8 @@ class PendingCommand:
     def stdin(self, *args, file=None):
         return self
 
-    def or_(self, *args, **kwargs):
-        other = _args_to_command(args, kwargs)
-        return CompoundOrCommand(self, other)
-
-    def and_(self, *args, **kwargs):
-        other = _args_to_command(args, kwargs)
-        return CompoundAndCommand(self, other)
-
     def __repr__(self):
         return f"<PendingCommand: {self._command_line}>"
-
-
-class CompoundCommand(PendingCommand):
-    def __init__(self, left: PendingCommand, right: PendingCommand):
-        super().__init__(None)
-        self.left = left
-        self.right = right
-
-    def __repr__(self):
-        return f"<{type(self).__name__}: {self.left!r} {self.right!r}>"
-
-
-class CompoundOrCommand(CompoundCommand):
-    def _run(self):
-        left_result = self.left._run()
-        if left_result.status == 0:
-            return left_result
-        return self.right._run()
-
-
-class CompoundAndCommand(CompoundCommand):
-    def _run(self):
-        left_result = self.left._run()
-        if left_result.status != 0:
-            return left_result
-        return self.right._run()
 
 
 class CommandResult:

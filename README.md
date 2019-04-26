@@ -11,14 +11,14 @@ of the benefits of Python.
 
 ## Usage - Quick:
 ```python
-  from bypash import cmd, run
+  from bypash import cmd, run, run_
 
   print(run('git', 'log', '-5', skip=5))   # same as `git log -5 --skip=5`
 
   run('false') # raise exception.
 
-  if not run('false', __raise=False): # Does not raise.
-    print('false is falsey')
+  if not run_('false'): # Does not raise.
+      print('false is falsey')
 
   # equivalent to `git log --oneline | grep broken':
   c = cmd('git', 'log', '--oneline').stdout('grep', 'broken')
@@ -39,7 +39,7 @@ returns a PendingCommand instance - this object supports piping, redirecting,
 executing, and all the things we like.
 `run()` returns a CommandResult instance, which should to the right thing.
 
-#### `cmd(...)`, `run(...)`:
+#### `cmd(...)`, `run(...)`, `run_(...)`:
 
 The positional arguments for these functions are all assumed to be a command
 (first argument) and its arguments, as strings.
@@ -55,6 +55,8 @@ guaranteed (because it's a python dict).
 `cmd` returns a PendingCommand instance.
 
 `run(...)` is short for `cmd(...).run()`, and returns CommandResult.
+
+`run_(...)` is short for `run(..., __raise=False)`.
 
 
 ### PendingCommand class:
@@ -84,12 +86,6 @@ If they receive a single named parameter `file`, this may be either a string
 (which is interpreted as a filename) or a file-object.
 Otherwise, the arguments are assumed to be the inputs for `cmd`, and the two
 commands are piped together.
-
-#### `.and_()`, `.or_()`:
-These methods take either a PendingCommand instance or the arguments for
-  `cmd`. The resulting command is chained to self as if by `&&` or `||` operator
-  in Bash.
-    (The funny names are because `and` and `or` are reserved words).
 
 ### CommandResult class:
 Instances of this class are immutable, and they keep the entire outputs from
